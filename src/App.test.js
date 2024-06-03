@@ -53,3 +53,14 @@ test("should be able to search and display dog image results", async () => {
   expect(dogImages[0]).toHaveAccessibleName("cattledog 1 of 2");
   expect(dogImages[1]).toHaveAccessibleName("cattledog 2 of 2");
 });
+
+test("should be able to show a fact about what happens as soon as the page loads", async () => {
+  //fetch do mock para garantir que o texto obtido pelo componente é o mesmo usado para testar
+  const responseMock = await fetch("https://dogapi.dog/api/v2/facts");
+  const data = await responseMock.json();
+  const factText = data.data[0].attributes.body;
+
+  render(<App />);
+  //verifica se o fato foi carregado no documento
+  expect(await screen.findByText(factText)).toBeInTheDocument();
+});
